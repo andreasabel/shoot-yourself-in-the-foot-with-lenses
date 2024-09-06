@@ -1,7 +1,8 @@
 How to shoot yourself in the foot with lenses and state
 =======================================================
 
-_Run the code here with `ghci -pgmL markdown-unlit README.lhs` using
+_Run the [code](https://github.com/andreasabel/shoot-yourself-in-the-foot-with-lenses)
+with `ghci -pgmL markdown-unlit README.lhs` using
 [Simon Hengel's markdown-unlit tool](https://github.com/sol/markdown-unlit)._
 
 
