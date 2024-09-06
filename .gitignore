@@ -1,0 +1,4 @@
+/.stack-work/
+/stack.yaml.lock
+/shoot-yourself-in-the-foot-with-lenses.cabal
+/dist-newstyle/
