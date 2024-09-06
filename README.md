@@ -72,6 +72,8 @@ modifyM l f = do
   o' <- l f o
   put o'
 ```
+This can even be written as simple pipeline `get >>= l f >>= put`.
+Seems like van Laarhoven lenses were made for effectful updates!
 
 Let try that out!
 We write a small monadic program that sets the `value` in `St` and records whether it changed
@@ -127,8 +129,8 @@ Analysis
 
 Since we are dealing with a short program the culprit should not be hard to find.
 
-Our first suspicion goes to `modifyM` which could be written `modifyM l f = get >>= l f >>= put`.
-It gets the state, modifies it through `l f` and writes back the result.
+Our first suspicion goes to `modifyM`.
+It gets the state, modifies it through `l f` and writes back the result...
 Seems exactly what we want it to do.
 
 So the lenses must be blamed!  Let's revisit the definition of `value`:
@@ -163,19 +165,13 @@ Is there anything we can fix in our implementation of the lenses or `modifyM` to
    ```haskell
    modifyMSafe :: MonadState o m => Lens' o i -> (i -> m i) -> m ()
    modifyMSafe l f = do
-     o  <- get
-     o' <- l f o
-     o'' <- get
-     put $ reconcile o' o''
+     i  <- get_ l <$> get
+     i' <- f i
+     modify $ set l i'
    ```
-   Here, we would have the proper update from `f` in `o'` and the updates from its side effects in `o''`.
-   But in general, there is no `reconcile` that integrates these updates.
-   ```haskell
-   reconcile :: o -> o -> o
-   reconcile = undefined
-   ```
-
-Unfortunately, the idea of `modifyM` cannot be salvaged.
+   (Or as one-liner: `get <&> get_ l >>= f >>= modify . set l`.)
+   This works because we use the lens `l` in an effect-free way, just through its getter and setter instance.
+   Yet our original idea for `modifyM` cannot be salvaged.
 
 Conclusion
 ----------
