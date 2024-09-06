@@ -180,6 +180,9 @@ The definition of van Laarhofen lenses `Functor f => (i -> f i) -> o -> f o` see
 as it is the most _direct_ way to use them.
 However, following its Siren call can have devastating consequences such as state loss that is hard to discover.
 
-In the wild I was bitten by this trap in our 160kloc Agda codebase, where it took me a full work day to isolate the cause of the weird state loss I was observing: https://github.com/agda/agda/pull/7470#discussion_r1747232483
+In the wild I was bitten by this trap in our 160kloc Agda codebase, where it took me a full work day to isolate the cause of the weird state loss I was observing:
+<https://github.com/agda/agda/pull/7470#discussion_r1747232483>
 
-_Write a comment by opening an issue in the issue tracker!_
+_Write a comment by opening an issue in the [issue tracker](https://github.com/andreasabel/shoot-yourself-in-the-foot-with-lenses/issues)!_
+
+Source: <https://github.com/andreasabel/shoot-yourself-in-the-foot-with-lenses>
