@@ -171,8 +171,9 @@ Is there anything we can fix in our implementation of the lenses or `modifyM` to
      modify $ set l i'
    ```
    (Or as one-liner: `get <&> get_ l >>= f >>= modify . set l`.)
-   This works because we use the lens `l` in an effect-free way, just through its getter and setter instance.
-   Yet our original idea for `modifyM` cannot be salvaged.
+   This works better because we use the lens `l` in an effect-free way, just through its getter and setter instance.
+   Yet any effects that `f i` has on the `i`-part of `o` are still overwritten by the `set` operation.
+   There probably isn't a safe version of `modifyM`.
 
 Conclusion
 ----------
@@ -186,4 +187,13 @@ In the wild I was bitten by this trap in our 160kloc Agda codebase, where it too
 
 _Write a comment by opening an issue in the [issue tracker](https://github.com/andreasabel/shoot-yourself-in-the-foot-with-lenses/issues)!_
 
-Source: <https://github.com/andreasabel/shoot-yourself-in-the-foot-with-lenses>
+## Acknowledgements
+
+Thanks to Ryan Hendrickson (@rhendric), @prophet, and Brandon Chinn (@brandonchinn178) for early feeback.
+
+References
+----------
+
+- Source: <https://github.com/andreasabel/shoot-yourself-in-the-foot-with-lenses>
+
+- A [comment on a related `lens` issue](https://github.com/ekmett/lens/issues/36#issuecomment-8402780) by Edward Kmett in 2012, [communicated to me](https://discourse.haskell.org/t/how-to-shoot-yourself-in-the-foot-with-lenses-and-state/10297/3) by Ryan Hendrickson.
